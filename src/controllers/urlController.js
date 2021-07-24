@@ -1,4 +1,4 @@
-const { encode, decode } = require("../services/urlService");
+const { encode, decode, getShortUrl } = require("../services/urlService");
 const { success, badRequest } = require("../utils/responseHelper");
 
 class UrlController {
@@ -17,6 +17,18 @@ class UrlController {
       return success(res, true, 200, url, "url decoded sucessfully");
     } catch ({ code, message }) {
       return badRequest(res, false, code, message);
+    }
+  }
+
+  static async visitShortUrl(req, res) {
+    try {
+      const url = await getShortUrl(req.params.path);
+      res.redirect(url.long_url);
+      res.sendStatus(304);
+    } catch ({ message }) {
+      console.log("message ", message);
+      res.render("404", { message });
+      res.sendStatus(200);
     }
   }
 }

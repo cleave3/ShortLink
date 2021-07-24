@@ -2,6 +2,7 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const app = require("../index");
 const { ShortUrl, Stats } = require("../models");
+const { BASE_URL } = require("../utils/environment");
 
 chai.use(chaiHttp);
 chai.should();
@@ -137,6 +138,20 @@ describe("Api Endpoints", () => {
       res.body.data.should.be.an("object");
       res.body.data.long_url.should.be.a("string");
       res.body.data.long_url.should.equal(long_url);
+    });
+  });
+
+  describe("Redirect", () => {
+    it("should redirect to the long_url when a valid short_url param is supplied", async () => {
+      const res = await chai.request(app).get(`/${short_url.substring(BASE_URL.length, short_url.length)}`);
+
+      res.should.to.redirectTo(long_url);
+      res.should.to.redirect;
+    });
+
+    it("should not redirect when an invalid params is supplied", async () => {
+      const res = await chai.request(app).get(`/badparams`);
+      res.should.to.not.redirect;
     });
   });
 });

@@ -1,0 +1,22 @@
+body {
+  background-color: #465e71;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  overflow-y: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.content {
+  text-align: center;
+  background-color: #fff;
+  color: #000000;
+  max-width: 500px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.content p {
+  font-size: 2rem;
+  font-weight: bold;
+}

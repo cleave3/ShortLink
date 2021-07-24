@@ -28,6 +28,12 @@ class UrlService {
 
     return { long_url: url.long_url };
   }
+
+  static async getShortUrl(params) {
+    const url = await ShortUrl.findOne({ where: { short_url: params } });
+    if (!url) throwError(404, "Oops!!! Page not found. check if you made a typo");
+    return url;
+  }
 }
 
 module.exports = UrlService;
