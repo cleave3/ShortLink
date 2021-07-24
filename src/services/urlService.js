@@ -1,6 +1,9 @@
+const publicIp = require("public-ip");
+const DeviceDetector = require("device-detector-js");
+const { lookup } = require("geoip-lite");
 const shortid = require("shortid");
-const { validateLongUrl, validateShortUrl } = require("../validation/validator");
-const { ShortUrl } = require("../models");
+const { validateShortUrl, validateLongUrl } = require("../validation/validator");
+const { ShortUrl, Stats } = require("../models");
 const { BASE_URL } = require("../utils/environment");
 const { throwError } = require("../utils/responseHelper");
 
@@ -29,10 +32,30 @@ class UrlService {
     return { long_url: url.long_url };
   }
 
-  static async getShortUrl(params) {
+  static async getShortUrl(params, useragent) {
     const url = await ShortUrl.findOne({ where: { short_url: params } });
     if (!url) throwError(404, "Oops!!! Page not found. check if you made a typo");
+    await UrlService.recordStats(params, useragent);
     return url;
+  }
+
+  static async recordStats(url_id, useragent) {
+    const deviceDetector = new DeviceDetector();
+    const device = deviceDetector.parse(useragent);
+
+    const ip = await publicIp.v4();
+    const geo = lookup(ip);
+
+    await Stats.create({
+      ip,
+      country: geo?.country,
+      timezone: geo?.timezone,
+      city: geo?.city,
+      url_id,
+      browser: device?.client?.name,
+      os: device?.os?.name,
+      device: device?.device?.type,
+    });
   }
 }
 

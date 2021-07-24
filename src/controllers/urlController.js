@@ -22,13 +22,11 @@ class UrlController {
 
   static async visitShortUrl(req, res) {
     try {
-      const url = await getShortUrl(req.params.path);
+      const useragent = req.get("User-Agent");
+      const url = await getShortUrl(req.params.path, useragent);
       res.redirect(url.long_url);
-      res.sendStatus(304);
     } catch ({ message }) {
-      console.log("message ", message);
       res.render("404", { message });
-      res.sendStatus(200);
     }
   }
 }
