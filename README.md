@@ -41,6 +41,12 @@ ShortLink is a URL shortening service where you enter a URL, it returns a short 
     npm run start
 ```
 
+5.  To run test
+
+```
+    npm run test
+```
+
 ### Testing the application
 
 On postman test out the following endpoints
