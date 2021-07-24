@@ -154,4 +154,53 @@ describe("Api Endpoints", () => {
       res.should.to.not.redirect;
     });
   });
+
+  describe("/statistic/{url_path}", () => {
+    it("should return an error when an invalid url_path is supplied", async () => {
+      const res = await chai.request(app).get("/statistic/notfound");
+
+      res.should.have.status(404);
+      res.body.should.have.property("status");
+      res.body.should.have.property("code");
+      res.body.should.have.property("error");
+      res.body.status.should.equal(false);
+      res.body.code.should.equal(404);
+      res.body.error.should.equal("url not found");
+    });
+
+    it("should return relevant statistics when a valid url_path is supplied", async () => {
+      const res = await chai.request(app).get(`/statistic/${short_url.substring(BASE_URL.length, short_url.length)}`);
+
+      res.should.have.status(200);
+      res.body.should.have.property("status");
+      res.body.should.have.property("code");
+      res.body.should.have.property("message");
+      res.body.should.have.property("data");
+      res.body.data.should.have.property("id");
+      res.body.data.should.have.property("short_url");
+      res.body.data.should.have.property("long_url");
+      res.body.data.should.have.property("created_at");
+      res.body.data.should.have.property("totalclicks");
+      res.body.data.should.have.property("visitors");
+      res.body.data.visitors.should.have.property("uniquevisitors");
+      res.body.data.visitors.should.have.property("browsers");
+      res.body.data.visitors.should.have.property("platforms");
+      res.body.data.visitors.should.have.property("devices");
+      res.body.data.visitors.should.have.property("countries");
+      res.body.data.visitors.should.have.property("timezones");
+      res.body.data.visitors.should.have.property("cities");
+      res.body.status.should.equal(true);
+      res.body.code.should.equal(200);
+      res.body.data.should.be.an("object");
+      res.body.data.visitors.should.be.an("object");
+      res.body.message.should.equal("stats retrieved");
+      res.body.data.visitors.uniquevisitors.should.equal(1);
+      res.body.data.visitors.browsers.length.should.equal(1);
+      res.body.data.visitors.platforms.length.should.equal(1);
+      res.body.data.visitors.devices.length.should.equal(1);
+      res.body.data.visitors.countries.length.should.equal(1);
+      res.body.data.visitors.timezones.length.should.equal(1);
+      res.body.data.visitors.cities.length.should.equal(1);
+    });
+  });
 });
