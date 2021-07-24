@@ -64,7 +64,7 @@ headers: {
 
 method: `POST`
 
-```json
+```js
 body
 
 {
@@ -95,7 +95,7 @@ failure response
 
 method: `POST`
 
-```json
+```js
 body
 
 {
@@ -125,7 +125,7 @@ failure response
 
 method: `GET`
 
-```json
+```js
 success response
 {
     "status": true,
