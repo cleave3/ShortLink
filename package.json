@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "cross-env NODE_ENV=test nyc mocha --timeout 5000000 src/tests/*.js  --exit",
+    "test": "cross-env NODE_ENV=test sequelize db:migrate && cross-env NODE_ENV=test nyc mocha --timeout 5000000 src/tests/*.js  --exit",
     "migration": "sequelize db:migrate",
     "undo-migration": "sequelize db:migrate:undo:all"
   },

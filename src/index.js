@@ -1,10 +1,12 @@
 const express = require("express");
-
-const PORT = process.env.PORT || 8080;
+const { PORT } = require("./utils/environment");
+const router = require("./routes");
 
 const app = express();
 
-app.get("/", (req, res) => res.status(200).json({ status: true, code: 200, message: "App is live" }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(router);
 
 app.listen(PORT, () => console.log(`App is live on port ${PORT}`));
 
