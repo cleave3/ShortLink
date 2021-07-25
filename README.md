@@ -68,7 +68,7 @@ method: `POST`
 body
 
 {
-    "long_url": "string" // a valid url
+    "long_url": "string" // a valid url e.g https://google.com
 }
 
 success response
@@ -91,6 +91,8 @@ failure response
 
 ```
 
+Note: Visit short url on browser and get redirected to the long url
+
 2. /decode
 
 method: `POST`
@@ -99,7 +101,7 @@ method: `POST`
 body
 
 {
-    "short_url": "string" // a shortened url
+    "short_url": "string" // a shortened url e.g http://localhost:8080/6g3etestf
 }
 
 success response
